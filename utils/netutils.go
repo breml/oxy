@@ -100,7 +100,12 @@ func CopyURL(i *url.URL) *url.URL {
 func CopyHeaders(dst, src http.Header) {
 	for k, vv := range src {
 		for _, v := range vv {
-			dst.Add(k, v)
+			switch k {
+			case "Etag":
+				dst["ETag"] = []string{v}
+			default:
+				dst.Add(k, v)
+			}
 		}
 	}
 }
